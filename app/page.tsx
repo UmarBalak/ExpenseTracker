@@ -79,6 +79,33 @@ export default function ExpenseTracker() {
     setExpenses(expenses.filter((expense) => expense.id !== id))
   }
 
+  const handleDeleteAll = () => {
+    if (window.confirm("Are you sure you want to delete ALL expenses? This action cannot be undone.")) {
+      setExpenses([])
+    }
+  }
+
+  const handleDeleteByCategory = () => {
+    if (filterCategory === "All") {
+      alert("Please select a specific category to delete")
+      return
+    }
+
+    const count = expenses.filter((expense) => expense.category === filterCategory).length
+    if (count === 0) {
+      alert(`No expenses found in category: ${filterCategory}`)
+      return
+    }
+
+    if (
+      window.confirm(
+        `Are you sure you want to delete all ${count} expense(s) in category "${filterCategory}"? This action cannot be undone.`,
+      )
+    ) {
+      setExpenses(expenses.filter((expense) => expense.category !== filterCategory))
+    }
+  }
+
   const filteredExpenses =
     filterCategory === "All" ? expenses : expenses.filter((expense) => expense.category === filterCategory)
 
@@ -229,21 +256,53 @@ export default function ExpenseTracker() {
       <div className="history-container">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
           <h2 style={{ fontSize: "16px", letterSpacing: "1px" }}>Expense History</h2>
-          {filteredExpenses.length > 0 && (
-            <button
-              onClick={downloadPDF}
-              style={{
-                backgroundColor: "#000",
-                color: "#fff",
-                padding: "8px 16px",
-                fontSize: "14px",
-                cursor: "pointer",
-                border: "none",
-              }}
-            >
-              Download PDF
-            </button>
-          )}
+          <div style={{ display: "flex", gap: "12px" }}>
+            {filteredExpenses.length > 0 && (
+              <>
+                <button
+                  onClick={downloadPDF}
+                  style={{
+                    backgroundColor: "#000",
+                    color: "#fff",
+                    padding: "8px 16px",
+                    fontSize: "14px",
+                    cursor: "pointer",
+                    border: "none",
+                  }}
+                >
+                  Download PDF
+                </button>
+                {filterCategory !== "All" && (
+                  <button
+                    onClick={handleDeleteByCategory}
+                    style={{
+                      backgroundColor: "#dc2626",
+                      color: "#fff",
+                      padding: "8px 16px",
+                      fontSize: "14px",
+                      cursor: "pointer",
+                      border: "none",
+                    }}
+                  >
+                    Delete Category
+                  </button>
+                )}
+                <button
+                  onClick={handleDeleteAll}
+                  style={{
+                    backgroundColor: "#991b1b",
+                    color: "#fff",
+                    padding: "8px 16px",
+                    fontSize: "14px",
+                    cursor: "pointer",
+                    border: "none",
+                  }}
+                >
+                  Delete All
+                </button>
+              </>
+            )}
+          </div>
         </div>
 
         <div style={{ marginBottom: "20px", display: "flex", alignItems: "center", gap: "12px" }}>
