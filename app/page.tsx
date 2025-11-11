@@ -196,180 +196,477 @@ export default function ExpenseTracker() {
   }
 
   return (
-    <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
-      {/* Header */}
-      <h1 style={{ textAlign: "center", fontSize: "28px", marginBottom: "20px", letterSpacing: "2px" }}>
-        Expense Tracker
-      </h1>
-      <div
-        style={{ textAlign: "center", borderBottom: "2px solid #000", paddingBottom: "12px", marginBottom: "40px" }}
-      ></div>
+    <>
+      <style jsx>{`
+        * {
+          box-sizing: border-box;
+        }
 
-      {/* Add Expense Form */}
-      <div className="form-container">
-        <h2 style={{ marginBottom: "24px", fontSize: "16px", letterSpacing: "1px" }}>Add Expense</h2>
+        .container {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 20px 16px;
+        }
 
-        <div style={{ marginBottom: "16px" }}>
-          <label style={{ display: "block", marginBottom: "8px", fontSize: "14px" }}>Date:</label>
-          <input type="date" name="date" value={formData.date} onChange={handleInputChange} />
+        @media (min-width: 768px) {
+          .container {
+            padding: 40px 20px;
+          }
+        }
+
+        .header-title {
+          text-align: center;
+          font-size: 24px;
+          margin-bottom: 16px;
+          letter-spacing: 1.5px;
+        }
+
+        @media (min-width: 768px) {
+          .header-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+          }
+        }
+
+        .header-divider {
+          text-align: center;
+          border-bottom: 2px solid #000;
+          padding-bottom: 12px;
+          margin-bottom: 24px;
+        }
+
+        @media (min-width: 768px) {
+          .header-divider {
+            margin-bottom: 40px;
+          }
+        }
+
+        .form-container {
+          background: #f9f9f9;
+          padding: 20px 16px;
+          margin-bottom: 32px;
+          border: 1px solid #ddd;
+        }
+
+        @media (min-width: 768px) {
+          .form-container {
+            padding: 24px;
+          }
+        }
+
+        .form-container h2 {
+          margin-bottom: 20px;
+          font-size: 16px;
+          letter-spacing: 1px;
+        }
+
+        .form-group {
+          margin-bottom: 16px;
+        }
+
+        .form-label {
+          display: block;
+          margin-bottom: 8px;
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .form-input,
+        .form-select {
+          width: 100%;
+          padding: 10px 12px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          background: white;
+        }
+
+        .form-button {
+          width: 100%;
+          padding: 12px;
+          background: #000;
+          color: #fff;
+          border: none;
+          font-size: 14px;
+          cursor: pointer;
+          font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+          .form-button {
+            width: auto;
+            padding: 12px 32px;
+          }
+        }
+
+        .form-button:hover {
+          background: #333;
+        }
+
+        .history-container {
+          background: #fff;
+          border: 1px solid #ddd;
+          padding: 16px;
+        }
+
+        @media (min-width: 768px) {
+          .history-container {
+            padding: 24px;
+          }
+        }
+
+        .history-header {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+          .history-header {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+          }
+        }
+
+        .history-title {
+          font-size: 16px;
+          letter-spacing: 1px;
+          margin: 0;
+        }
+
+        .button-group {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        @media (min-width: 768px) {
+          .button-group {
+            flex-direction: row;
+            gap: 12px;
+          }
+        }
+
+        .action-button {
+          padding: 10px 16px;
+          font-size: 14px;
+          cursor: pointer;
+          border: none;
+          font-weight: 600;
+          white-space: nowrap;
+        }
+
+        .btn-download {
+          background-color: #000;
+          color: #fff;
+        }
+
+        .btn-download:hover {
+          background-color: #333;
+        }
+
+        .btn-delete-category {
+          background-color: #dc2626;
+          color: #fff;
+        }
+
+        .btn-delete-category:hover {
+          background-color: #b91c1c;
+        }
+
+        .btn-delete-all {
+          background-color: #991b1b;
+          color: #fff;
+        }
+
+        .btn-delete-all:hover {
+          background-color: #7f1d1d;
+        }
+
+        .filter-container {
+          margin-bottom: 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        @media (min-width: 768px) {
+          .filter-container {
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+          }
+        }
+
+        .filter-label {
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .filter-select {
+          padding: 8px 12px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          background: white;
+        }
+
+        @media (min-width: 768px) {
+          .filter-select {
+            width: 200px;
+          }
+        }
+
+        .empty-state {
+          padding: 40px 20px;
+          text-align: center;
+          background-color: #ffffff;
+          border: 1px solid #d0d0d0;
+        }
+
+        .empty-state p {
+          color: #666666;
+          font-size: 14px;
+          margin: 0;
+        }
+
+        .table-wrapper {
+          width: 100%;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .expense-table {
+          width: 100%;
+          border-collapse: collapse;
+          min-width: 600px;
+          font-size: 13px;
+        }
+
+        @media (min-width: 768px) {
+          .expense-table {
+            font-size: 14px;
+          }
+        }
+
+        .expense-table thead {
+          background: #000;
+          color: #000000ff;
+        }
+
+        .expense-table th,
+        .expense-table td {
+          padding: 10px 8px;
+          text-align: left;
+          border: 1px solid #ddd;
+        }
+
+        @media (min-width: 768px) {
+          .expense-table th,
+          .expense-table td {
+            padding: 12px;
+          }
+        }
+
+        .expense-table th {
+          font-weight: 600;
+          font-size: 13px;
+        }
+
+        @media (min-width: 768px) {
+          .expense-table th {
+            font-size: 14px;
+          }
+        }
+
+        .expense-table tbody tr:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        .expense-table tbody tr:hover {
+          background-color: #f0f0f0;
+        }
+
+        .delete-btn {
+          background: #dc2626;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          font-size: 12px;
+          cursor: pointer;
+          font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+          .delete-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+          }
+        }
+
+        .delete-btn:hover {
+          background: #b91c1c;
+        }
+
+        .total-section {
+          background-color: #ffffff;
+          padding: 16px 12px;
+          border-top: 2px solid #d0d0d0;
+          margin-top: 0;
+          text-align: right;
+          font-size: 14px;
+        }
+
+        @media (min-width: 768px) {
+          .total-section {
+            font-size: 16px;
+          }
+        }
+      `}</style>
+
+      <div className="container">
+        {/* Header */}
+        <h1 className="header-title">Expense Tracker</h1>
+        <div className="header-divider"></div>
+
+        {/* Add Expense Form */}
+        <div className="form-container">
+          <h2>Add Expense</h2>
+
+          <div className="form-group">
+            <label className="form-label">Date:</label>
+            <input
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Category:</label>
+            <select name="category" value={formData.category} onChange={handleInputChange} className="form-select">
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Amount (INR):</label>
+            <input
+              type="number"
+              name="amount"
+              placeholder="0.00"
+              value={formData.amount}
+              onChange={handleInputChange}
+              step="0.01"
+              min="0"
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Description:</label>
+            <input
+              type="text"
+              name="description"
+              placeholder="Optional"
+              value={formData.description}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
+
+          <button onClick={handleAddExpense} className="form-button">
+            Add
+          </button>
         </div>
 
-        <div style={{ marginBottom: "16px" }}>
-          <label style={{ display: "block", marginBottom: "8px", fontSize: "14px" }}>Category:</label>
-          <select name="category" value={formData.category} onChange={handleInputChange}>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div style={{ marginBottom: "16px" }}>
-          <label style={{ display: "block", marginBottom: "8px", fontSize: "14px" }}>Amount (INR):</label>
-          <input
-            type="number"
-            name="amount"
-            placeholder="0.00"
-            value={formData.amount}
-            onChange={handleInputChange}
-            step="0.01"
-            min="0"
-          />
-        </div>
-
-        <div style={{ marginBottom: "24px" }}>
-          <label style={{ display: "block", marginBottom: "8px", fontSize: "14px" }}>Description:</label>
-          <input
-            type="text"
-            name="description"
-            placeholder="Optional"
-            value={formData.description}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <button onClick={handleAddExpense}>Add</button>
-      </div>
-
-      {/* Expense History */}
-      <div className="history-container">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-          <h2 style={{ fontSize: "16px", letterSpacing: "1px" }}>Expense History</h2>
-          <div style={{ display: "flex", gap: "12px" }}>
+        {/* Expense History */}
+        <div className="history-container">
+          <div className="history-header">
+            <h2 className="history-title">Expense History</h2>
             {filteredExpenses.length > 0 && (
-              <>
-                <button
-                  onClick={downloadPDF}
-                  style={{
-                    backgroundColor: "#000",
-                    color: "#fff",
-                    padding: "8px 16px",
-                    fontSize: "14px",
-                    cursor: "pointer",
-                    border: "none",
-                  }}
-                >
+              <div className="button-group">
+                <button onClick={downloadPDF} className="action-button btn-download">
                   Download PDF
                 </button>
                 {filterCategory !== "All" && (
-                  <button
-                    onClick={handleDeleteByCategory}
-                    style={{
-                      backgroundColor: "#dc2626",
-                      color: "#fff",
-                      padding: "8px 16px",
-                      fontSize: "14px",
-                      cursor: "pointer",
-                      border: "none",
-                    }}
-                  >
+                  <button onClick={handleDeleteByCategory} className="action-button btn-delete-category">
                     Delete Category
                   </button>
                 )}
-                <button
-                  onClick={handleDeleteAll}
-                  style={{
-                    backgroundColor: "#991b1b",
-                    color: "#fff",
-                    padding: "8px 16px",
-                    fontSize: "14px",
-                    cursor: "pointer",
-                    border: "none",
-                  }}
-                >
+                <button onClick={handleDeleteAll} className="action-button btn-delete-all">
                   Delete All
                 </button>
-              </>
+              </div>
             )}
           </div>
-        </div>
 
-        <div style={{ marginBottom: "20px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <label style={{ fontSize: "14px" }}>Filter by category:</label>
-          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} style={{ width: "200px" }}>
-            {uniqueCategories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {filteredExpenses.length === 0 ? (
-          <div
-            style={{
-              padding: "40px",
-              textAlign: "center",
-              backgroundColor: "#ffffff",
-              borderBottom: "1px solid #d0d0d0",
-            }}
-          >
-            <p style={{ color: "#666666", fontSize: "14px" }}>No expense data available.</p>
-          </div>
-        ) : (
-          <>
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Category</th>
-                  <th>Amount (INR)</th>
-                  <th>Description</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredExpenses.map((expense) => (
-                  <tr key={expense.id}>
-                    <td>{expense.date}</td>
-                    <td>{expense.category}</td>
-                    <td>{expense.amount.toFixed(2)}</td>
-                    <td>{expense.description || "-"}</td>
-                    <td>
-                      <button className="delete-btn" onClick={() => handleDeleteExpense(expense.id)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <div
-              style={{
-                backgroundColor: "#ffffff",
-                padding: "16px 12px",
-                borderTop: "2px solid #d0d0d0",
-                marginTop: "16px",
-                textAlign: "right",
-              }}
+          <div className="filter-container">
+            <label className="filter-label">Filter by category:</label>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="filter-select"
             >
-              <strong>Total: INR {totalAmount.toFixed(2)}</strong>
+              {uniqueCategories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {filteredExpenses.length === 0 ? (
+            <div className="empty-state">
+              <p>No expense data available.</p>
             </div>
-          </>
-        )}
+          ) : (
+            <>
+              <div className="table-wrapper">
+                <table className="expense-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Category</th>
+                      <th>Amount (INR)</th>
+                      <th>Description</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredExpenses.map((expense) => (
+                      <tr key={expense.id}>
+                        <td>{expense.date}</td>
+                        <td>{expense.category}</td>
+                        <td>{expense.amount.toFixed(2)}</td>
+                        <td>{expense.description || "-"}</td>
+                        <td>
+                          <button className="delete-btn" onClick={() => handleDeleteExpense(expense.id)}>
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="total-section">
+                <strong>Total: INR {totalAmount.toFixed(2)}</strong>
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
+  
