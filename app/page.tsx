@@ -41,7 +41,7 @@ export default function ExpenseTracker() {
     localStorage.setItem("expenses", JSON.stringify(expenses))
   }, [expenses])
 
-  const categories = ["Food", "Transport", "Entertainment", "Utilities", "Health", "Shopping", "Other"]
+  const categories = ["Food", "Snacks", "Transport", "Shopping", "Utilities", "Entertainment", "Health", "Other"]
   const uniqueCategories = ["All", ...categories]
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
